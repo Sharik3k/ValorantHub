@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --valo-black: #050507;
+  --valo-card: #0d0d13;
+  --valo-card-dark: #09080c;
+  --valo-red: #ff3047;
+  --valo-red-dark: #d81f36;
+  --valo-text: #f5f5ff;
+  --valo-muted: #9d9db5;
+  --valo-border: rgba(255, 48, 71, 0.2);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[var(--valo-black)] text-[var(--valo-text)] antialiased;
+    background-image: radial-gradient(circle at top, rgba(255, 48, 71, 0.25), transparent 55%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: var(--valo-red);
+    color: var(--valo-text);
+  }
+}
+
+@layer components {
+  .valo-shell {
+    @apply max-w-6xl mx-auto px-4 md:px-6;
+  }
+
+  .valo-card {
+    @apply rounded-2xl border border-[var(--valo-border)] bg-gradient-to-b from-[var(--valo-card)] to-[var(--valo-card-dark)] shadow-lg shadow-black/40;
+  }
+
+  .valo-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide uppercase;
+  }
+}
