@@ -1,16 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --valo-black: #050507;
-  --valo-card: #0d0d13;
-  --valo-card-dark: #09080c;
-  --valo-red: #ff3047;
+  /* Офіційні кольори Valorant */
+  --valo-black: #0f1923;
+  --valo-card: #1a2733;
+  --valo-card-dark: #0f1923;
+  --valo-red: #ff4655;
   --valo-red-dark: #d81f36;
-  --valo-text: #f5f5ff;
-  --valo-muted: #9d9db5;
-  --valo-border: rgba(255, 48, 71, 0.2);
+  --valo-text: #ece8e1;
+  --valo-muted: #8a8d91;
+  --valo-border: rgba(255, 70, 85, 0.3);
+  --valo-glow: rgba(255, 70, 85, 0.5);
 }
 
 @layer base {
@@ -20,8 +24,18 @@
 
   body {
     @apply bg-[var(--valo-black)] text-[var(--valo-text)] antialiased;
-    background-image: radial-gradient(circle at top, rgba(255, 48, 71, 0.25), transparent 55%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255, 70, 85, 0.15), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 70, 85, 0.1), transparent 50%);
+    background-attachment: fixed;
     min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', 'Impact', sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   ::selection {
@@ -36,10 +50,201 @@
   }
 
   .valo-card {
-    @apply rounded-2xl border border-[var(--valo-border)] bg-gradient-to-b from-[var(--valo-card)] to-[var(--valo-card-dark)] shadow-lg shadow-black/40;
+    @apply rounded-lg border border-[var(--valo-border)] bg-gradient-to-br from-[var(--valo-card)] to-[var(--valo-card-dark)] shadow-2xl;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .valo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 70, 85, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .valo-card:hover::before {
+    left: 100%;
+  }
+
+  .valo-card:hover {
+    border-color: var(--valo-red);
+    box-shadow: 0 0 30px rgba(255, 70, 85, 0.3);
+    transform: translateY(-2px);
   }
 
   .valo-badge {
     @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  /* Glitch effect для кнопок */
+  .valo-btn {
+    @apply px-6 py-3 rounded font-bold tracking-wider uppercase transition-all duration-300;
+    position: relative;
+    overflow: hidden;
+    background: var(--valo-red);
+    color: var(--valo-black);
+    border: 2px solid var(--valo-red);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .valo-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .valo-btn:hover::before {
+    left: 100%;
+  }
+
+  .valo-btn:hover {
+    box-shadow: 0 0 20px var(--valo-glow), inset 0 0 20px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .valo-btn:active {
+    transform: translateY(0);
+  }
+
+  .valo-btn-outline {
+    @apply px-6 py-3 rounded font-bold tracking-wider uppercase transition-all duration-300;
+    background: transparent;
+    color: var(--valo-red);
+    border: 2px solid var(--valo-red);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .valo-btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--valo-red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+    z-index: -1;
+  }
+
+  .valo-btn-outline:hover::before {
+    width: 300%;
+    height: 300%;
+  }
+
+  .valo-btn-outline:hover {
+    color: var(--valo-black);
+    box-shadow: 0 0 20px var(--valo-glow);
+  }
+
+  /* Анімація появи */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  /* Glitch text effect */
+  @keyframes glitch {
+    0% {
+      text-shadow: 2px 2px var(--valo-red), -2px -2px cyan;
+    }
+    25% {
+      text-shadow: -2px -2px var(--valo-red), 2px 2px cyan;
+    }
+    50% {
+      text-shadow: 2px -2px var(--valo-red), -2px 2px cyan;
+    }
+    75% {
+      text-shadow: -2px 2px var(--valo-red), 2px -2px cyan;
+    }
+    100% {
+      text-shadow: 2px 2px var(--valo-red), -2px -2px cyan;
+    }
+  }
+
+  .glitch-text:hover {
+    animation: glitch 0.3s infinite;
+  }
+
+  /* Пульсація для важливих елементів */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px var(--valo-glow);
+    }
+    50% {
+      box-shadow: 0 0 20px var(--valo-glow), 0 0 30px var(--valo-glow);
+    }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Скелетон для завантаження */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--valo-card) 25%, var(--valo-card-dark) 50%, var(--valo-card) 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Діагональні лінії (Valorant style) */
+  .valo-stripes {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 70, 85, 0.05) 10px,
+      rgba(255, 70, 85, 0.05) 20px
+    );
+  }
+
+  /* Ховер ефект для карток агентів/зброї */
+  .agent-card {
+    @apply valo-card cursor-pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .agent-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255, 70, 85, 0.4);
+  }
+
+  .agent-card img {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .agent-card:hover img {
+    transform: scale(1.1);
   }
 }

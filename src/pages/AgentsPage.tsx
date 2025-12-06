@@ -54,45 +54,83 @@ const AgentsPage = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((agent) => (
+        {filtered.map((agent, index) => (
           <article
             key={agent.id}
-            className="valo-card p-6 border border-white/5 hover:-translate-y-1 hover:border-[var(--valo-red)]/50 transition"
+            className="agent-card p-0 overflow-hidden group"
+            style={{
+              animationDelay: `${index * 50}ms`,
+            }}
           >
-            <div className="relative mb-4 h-52 overflow-hidden rounded-xl border border-white/10">
+            <div className="relative h-64 overflow-hidden">
               <img
                 src={agent.img}
                 alt={agent.name}
-                className="absolute inset-0 h-full w-full object-cover opacity-80"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80" />
-              <div className="absolute bottom-4 left-4">
-                <p className="text-sm uppercase tracking-widest text-[var(--valo-muted)]">{agent.role}</p>
-                <h3 className="text-2xl font-bold">{agent.name}</h3>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--valo-black)]" />
+              
+              {/* Роль бейдж */}
+              <div className="absolute top-4 right-4">
+                <span className="valo-badge bg-[var(--valo-red)] text-[var(--valo-black)] shadow-lg">
+                  {agent.role}
+                </span>
+              </div>
+
+              {/* Ім'я агента */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-3xl font-black glitch-text">{agent.name}</h3>
               </div>
             </div>
 
-            <p className="text-sm text-[var(--valo-muted)] mb-4">{agent.description}</p>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-[var(--valo-muted)] leading-relaxed">
+                {agent.description}
+              </p>
 
-            <div className="flex flex-wrap gap-3 text-sm font-semibold">
-              <span className="valo-badge bg-white/10 text-white">Пікрейт {agent.pickRate}%</span>
-              <span className="valo-badge bg-[var(--valo-red)]/20 text-[var(--valo-red)]">Вінрейт {agent.winRate}%</span>
-            </div>
+              {/* Статистика */}
+              <div className="flex gap-3">
+                <div className="flex-1 bg-[var(--valo-card-dark)] rounded-lg p-3 text-center border border-[var(--valo-border)]">
+                  <div className="text-2xl font-black text-[var(--valo-red)]">{agent.pickRate}%</div>
+                  <div className="text-xs text-[var(--valo-muted)] uppercase tracking-wider">Пікрейт</div>
+                </div>
+                <div className="flex-1 bg-[var(--valo-card-dark)] rounded-lg p-3 text-center border border-[var(--valo-border)]">
+                  <div className="text-2xl font-black text-[var(--valo-red)]">{agent.winRate}%</div>
+                  <div className="text-xs text-[var(--valo-muted)] uppercase tracking-wider">Вінрейт</div>
+                </div>
+              </div>
 
-            <div className="mt-5">
-              <p className="text-xs uppercase text-[var(--valo-muted)] tracking-wider mb-2">Здібності</p>
-              <div className="flex flex-wrap gap-2">
-                {agent.abilities.map((ability) => (
-                  <span key={ability} className="px-3 py-1 rounded-full text-xs bg-white/5 border border-white/10">
-                    {ability}
-                  </span>
-                ))}
+              {/* Здібності */}
+              <div>
+                <p className="text-xs uppercase text-[var(--valo-muted)] tracking-wider mb-2 font-bold">
+                  Здібності
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {agent.abilities.map((ability) => (
+                    <span 
+                      key={ability} 
+                      className="px-3 py-1.5 rounded text-xs font-semibold bg-[var(--valo-card-dark)] border border-[var(--valo-border)] hover:border-[var(--valo-red)] hover:text-[var(--valo-red)] transition-colors"
+                    >
+                      {ability}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </article>
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <div className="valo-card p-12 text-center">
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-2xl font-bold mb-2">Агентів не знайдено</h3>
+          <p className="text-[var(--valo-muted)]">
+            Спробуйте змінити фільтри або пошуковий запит
+          </p>
+        </div>
+      )}
     </section>
   );
 };
