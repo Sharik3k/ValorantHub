@@ -167,109 +167,163 @@ const ChatAssistant = () => {
   }, [messages, loading]);
 
   return (
-    <section className="w-full px-0 py-8">
-      <div className="valo-card border-y border-white/10 w-full bg-black/30 px-6 md:px-16 py-10">
-        <div className="flex flex-col lg:flex-row gap-8 h-full">
-          <div className="lg:w-80 flex flex-col gap-6">
-            <div className="grid gap-2">
-              <p className="uppercase text-xs tracking-[0.5em] text-[var(--valo-muted)]">AI-асистент</p>
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-3xl font-black text-white">Чат із «Astra»</h2>
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/80 border border-white/20 uppercase tracking-[0.3em]">
-                  {activeCategory.label}
-                </span>
+    <section className="space-y-8">
+      {/* Header */}
+      <div className="valo-card p-8 valo-stripes relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--valo-red)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="relative z-10">
+          <p className="uppercase text-sm tracking-[0.6em] text-[var(--valo-red)] mb-3">🤖 AI-АСИСТЕНТ</p>
+          <h2 className="text-5xl md:text-6xl font-black mb-4 glitch-text">
+            ЧАТ З <span className="text-[var(--valo-red)]">ASTRA</span>
+          </h2>
+          <p className="text-lg text-[var(--valo-muted)] max-w-3xl">
+            Отримайте професійні поради від AI-асистента. Оберіть категорію та задайте своє питання.
+          </p>
+        </div>
+      </div>
+
+      {/* Main Chat Container */}
+      <div className="valo-card overflow-hidden">
+        <div className="flex flex-col lg:flex-row h-[calc(100vh-300px)] min-h-[600px]">
+          {/* Sidebar */}
+          <div className="lg:w-80 border-b lg:border-b-0 lg:border-r border-[var(--valo-border)] p-6 space-y-6 bg-[var(--valo-card-dark)]">
+            {/* Active Category */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 bg-[var(--valo-red)] rounded-full animate-pulse" />
+                <span className="text-xs uppercase tracking-wider text-[var(--valo-muted)] font-bold">Активна категорія</span>
               </div>
-              <p className="text-sm text-[var(--valo-muted)]">{activeCategory.description}</p>
+              <h3 className="text-2xl font-black text-[var(--valo-red)]">{activeCategory.label}</h3>
+              <p className="text-sm text-[var(--valo-muted)] leading-relaxed">{activeCategory.description}</p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {CHAT_CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => handleCategoryChange(cat.id)}
-                  className={`px-4 py-2 rounded-full border text-sm transition ${
-                    categoryId === cat.id
-                      ? 'bg-[var(--valo-red)] text-black border-[var(--valo-red)] shadow-lg shadow-[var(--valo-red)]/30'
-                      : 'border-white/15 text-white/70 hover:text-white hover:border-white/40'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-
-            {activeCategory.examples.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {activeCategory.examples.map(example => (
+            {/* Categories */}
+            <div className="space-y-2">
+              <span className="text-xs uppercase tracking-wider text-[var(--valo-muted)] font-bold">Категорії</span>
+              <div className="space-y-2">
+                {CHAT_CATEGORIES.map(cat => (
                   <button
-                    key={example}
+                    key={cat.id}
                     type="button"
-                    onClick={() => setInput(example)}
-                    className="px-3 py-1.5 rounded-full text-xs border border-white/10 text-white/70 hover:text-black hover:bg-white transition"
+                    onClick={() => handleCategoryChange(cat.id)}
+                    className={`w-full px-4 py-3 rounded-lg text-left text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                      categoryId === cat.id
+                        ? 'bg-[var(--valo-red)] text-[var(--valo-black)] shadow-lg scale-105'
+                        : 'bg-[var(--valo-card)] text-[var(--valo-muted)] hover:text-white hover:bg-[var(--valo-card-dark)] border border-[var(--valo-border)]'
+                    }`}
                   >
-                    {example}
+                    {cat.label}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Examples */}
+            {activeCategory.examples.length > 0 && (
+              <div className="space-y-2">
+                <span className="text-xs uppercase tracking-wider text-[var(--valo-muted)] font-bold">Приклади питань</span>
+                <div className="space-y-2">
+                  {activeCategory.examples.map(example => (
+                    <button
+                      key={example}
+                      type="button"
+                      onClick={() => setInput(example)}
+                      className="w-full px-3 py-2 rounded-lg text-xs text-left border border-[var(--valo-border)] text-[var(--valo-muted)] hover:text-white hover:border-[var(--valo-red)] hover:bg-[var(--valo-card)] transition-all"
+                    >
+                      💡 {example}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          <div className="flex-1 flex flex-col gap-4">
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 flex flex-col gap-3 max-h-[65vh] overflow-y-auto shadow-inner shadow-black/50">
-              {messages.length === 0 && <div className="text-[var(--valo-muted)] text-center py-10">Почніть діалог з Astra…</div>}
+          {/* Chat Area */}
+          <div className="flex-1 flex flex-col">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-[var(--valo-card)] to-[var(--valo-card-dark)]">
+              {messages.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+                  <div className="text-6xl mb-4">🤖</div>
+                  <h3 className="text-2xl font-bold">Привіт! Я Astra</h3>
+                  <p className="text-[var(--valo-muted)] max-w-md">
+                    Готова допомогти з питаннями про Valorant. Оберіть категорію зліва або задайте своє питання.
+                  </p>
+                </div>
+              )}
+              
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div 
+                  key={i} 
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up`}
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
                   <div
-                    className={`px-4 py-3 rounded-2xl max-w-[80%] whitespace-pre-line transition-all shadow-lg ${
+                    className={`px-5 py-3 rounded-2xl max-w-[80%] shadow-lg transition-all hover:scale-[1.02] ${
                       msg.role === 'user'
-                        ? 'bg-[var(--valo-red)] text-black'
-                        : 'bg-white/10 text-white border border-white/10'
+                        ? 'bg-[var(--valo-red)] text-[var(--valo-black)] font-semibold'
+                        : 'bg-[var(--valo-card-dark)] text-white border-2 border-[var(--valo-border)]'
                     }`}
-                    title={msg.role === 'user' ? 'Ви' : 'Astra'}
                   >
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
+                      {msg.content}
+                    </ReactMarkdown>
                     {msg.categoryId && (
-                      <span className="mt-2 inline-block text-[10px] uppercase tracking-[0.3em] bg-black/20 px-2 py-0.5 rounded-full text-white/70">
+                      <span className="mt-2 inline-block text-[10px] uppercase tracking-wider bg-black/30 px-2 py-1 rounded text-white/70">
                         {CHAT_CATEGORIES.find(cat => cat.id === msg.categoryId)?.label ?? 'Категорія'}
                       </span>
                     )}
                   </div>
                 </div>
               ))}
+              
               {loading && (
-                <div className="flex justify-start">
-                  <div className="px-4 py-3 rounded-2xl max-w-[80%] bg-white/10 text-white animate-pulse border border-white/10">Astra друкує…</div>
+                <div className="flex justify-start animate-fade-in-up">
+                  <div className="px-5 py-3 rounded-2xl bg-[var(--valo-card-dark)] text-white border-2 border-[var(--valo-border)] flex items-center gap-2">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-[var(--valo-red)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 bg-[var(--valo-red)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-[var(--valo-red)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                    <span>Astra друкує...</span>
+                  </div>
                 </div>
               )}
               <div ref={chatEndRef} />
             </div>
 
-            <form
-              className="flex flex-col gap-3 md:flex-row"
-              onSubmit={e => {
-                e.preventDefault();
-                handleSend();
-              }}
-            >
-              <input
-                className="flex-1 px-4 py-3 rounded-full bg-white text-black placeholder:text-black/50 outline-none focus:ring-2 focus:ring-[var(--valo-red)] transition"
-                placeholder="Введіть питання…"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                disabled={loading}
-                maxLength={400}
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 rounded-full bg-[var(--valo-red)] text-black font-semibold tracking-wide disabled:opacity-50 transition"
-                disabled={loading || !input.trim()}
+            {/* Input Area */}
+            <div className="border-t border-[var(--valo-border)] p-6 bg-[var(--valo-card-dark)]">
+              <form
+                className="flex gap-3"
+                onSubmit={e => {
+                  e.preventDefault();
+                  handleSend();
+                }}
               >
-                {loading ? '...' : 'Відправити'}
-              </button>
-            </form>
+                <input
+                  className="flex-1 px-6 py-4 rounded-lg bg-[var(--valo-card)] text-white placeholder:text-[var(--valo-muted)] outline-none border-2 border-[var(--valo-border)] focus:border-[var(--valo-red)] transition-all text-lg"
+                  placeholder="Введіть ваше питання..."
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  disabled={loading}
+                  maxLength={400}
+                />
+                <button
+                  type="submit"
+                  className="valo-btn disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={loading || !input.trim()}
+                >
+                  {loading ? '⏳' : '📤'} {loading ? 'Відправка...' : 'Відправити'}
+                </button>
+              </form>
 
-            {error && <div className="text-red-500 animate-fadeIn">{error}</div>}
+              {error && (
+                <div className="mt-3 p-3 rounded-lg bg-red-500/20 border border-red-500 text-red-200 text-sm">
+                  ❌ {error}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
