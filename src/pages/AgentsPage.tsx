@@ -87,11 +87,7 @@ const AgentsPage = () => {
               </div>
 
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[var(--valo-red)]/0 group-hover:bg-[var(--valo-red)]/10 transition-all duration-300 flex items-center justify-center">
-                <span className="text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Детальніше →
-                </span>
-              </div>
+              <div className="absolute inset-0 bg-[var(--valo-red)]/0 group-hover:bg-[var(--valo-red)]/10 transition-all duration-300" />
             </div>
 
             <div className="p-6 space-y-4">
@@ -239,6 +235,35 @@ const AgentsPage = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Agent Info */}
+              {(selectedAgent.realName || selectedAgent.origin) && (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {selectedAgent.realName && (
+                    <div className="bg-[var(--valo-card-dark)] rounded-lg p-6 border-2 border-[var(--valo-border)]">
+                      <div className="text-xs uppercase text-[var(--valo-muted)] tracking-wider mb-2 font-bold">Справжнє ім'я</div>
+                      <div className="text-2xl font-black text-[var(--valo-red)]">{selectedAgent.realName}</div>
+                    </div>
+                  )}
+                  {selectedAgent.origin && (
+                    <div className="bg-[var(--valo-card-dark)] rounded-lg p-6 border-2 border-[var(--valo-border)]">
+                      <div className="text-xs uppercase text-[var(--valo-muted)] tracking-wider mb-2 font-bold">Походження</div>
+                      <div className="text-2xl font-black text-[var(--valo-red)]">{selectedAgent.origin}</div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Lore Section */}
+              <div className="bg-gradient-to-br from-[var(--valo-card-dark)] to-[var(--valo-black)] rounded-lg p-8 border-2 border-[var(--valo-border)]">
+                <h3 className="text-3xl font-black mb-4 flex items-center gap-3">
+                  <span className="text-4xl">📖</span>
+                  ІСТОРІЯ
+                </h3>
+                <p className="text-[var(--valo-muted)] leading-relaxed text-lg">
+                  {selectedAgent.lore}
+                </p>
               </div>
 
               {/* Role Description */}
