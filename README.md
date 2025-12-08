@@ -1,6 +1,7 @@
 # 🎮 Valorant HUB
 
 **Valorant HUB** — це сучасна веб-платформа для фанатів гри Valorant, яка об'єднує всю необхідну інформацію про гру та інтелектуального AI-асистента (Astra) на базі GPT-4o.
+https://valorantasistent.vercel.app/
 
 ## 📋 Про проект
 
